@@ -1,0 +1,286 @@
+//Phep cong va tru chinh xac boi
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+int W, P, t, m;
+
+int *
+PAr (int a)			// hC m tra:# va; ma:#ng ta;+ sa; nguyC*n
+{
+  int A[t];
+  int *p = A;
+  for (int i = t - 1; i >= 0; i--)
+    {
+      A[i] = a / pow (2, i * W);
+      a = a - A[i] * pow (2, i * W);
+    }
+  return p;
+}
+
+void
+tinhtong (int A[], int B[])
+{
+  int e = 0, c = 0;
+  int C[100];
+
+  for (int i = 0; i <= t - 1; i++)
+
+    {
+
+      C[i] = A[i] + B[i] + e;
+
+
+
+      if (C[i] < 0 || C[i] > pow (2, W))	// Neu x khong thuoc [0, 2^W) thi bit nho bang 1 
+
+	{
+
+	  e = 1;
+
+	  C[i] = abs (pow (2, W) - abs (C[i]));
+
+	}
+
+      else			// Neu x thuoc [0, 2^W) thi bit nho bang 0 
+
+	e = 0;
+
+      c = c + C[i] * pow (2, i * W);
+
+    }
+
+  printf ("KQ: a + b = ( %d, [", e);	// in ra ket qua 
+
+  for (int i = t - 1; i >= 0; i--)
+
+    printf (" %d", C[i]);
+
+  printf (" ] = %d.", c);
+}
+
+void
+tinh_tongtu_mang (int A[], int B[])
+{
+  int s = 0;
+  int C[100];
+  for (int i = 0; i < t; i++)
+    {
+      C[i] = A[i] + B[i] + s;
+      if (C[i] < 0 || C[i] >= pow (2, W))
+	{
+	  s = 1;
+	  C[i] = abs (pow (2, W) - abs (C[i]));
+	}
+      else
+	{
+	  s = 0;
+	}
+      printf ("C[%d] s=%d dem cong vao tren\n", i, s);
+    }
+  for (int i = t - 1; i >= 0; i--)
+    {
+      printf ("%d ", C[i]);
+    }
+}
+
+void
+phep_tru (int A[], int B[])
+{
+  int s = 0, c = 0;
+  int C[100];
+  for (int i = 0; i < t; i++)
+    {
+      C[i] = A[i] - B[i] - s;
+      if (C[i] < 0 || C[i] >= pow (2, W))
+	{
+	  s = 1;
+	  C[i] = abs (pow (2, W) - abs (C[i]));
+	}
+      else
+	{
+	  s = 0;
+
+	}
+      c = c + C[i] * pow (2, i * W);
+    }
+  printf ("Ket qua A-b= %d\n", c);
+  for (int i = t - 1; i >= 0; i--)
+    {
+      printf ("%d ", C[i]);
+    }
+}
+
+int
+main ()
+{
+  int a, b;
+  printf ("Nhap so Wbit: ");
+  scanf ("%d", &W);
+  printf ("Nhap so p: ");
+  scanf ("%d", &P);
+  m = log (P) / log (2);
+  t = 0;
+  if (m % W > 0)
+    {
+      t = m / W + 1;
+    }
+  else
+    t = m / W;
+  printf ("%d %d", m, t);
+  while (1)
+    {
+      printf ("\n%-30s__________________________________________________\n",
+	      "");
+      printf ("%-30s|_____________________MENU_______________________|\n",
+	      "");
+      printf ("%-30s|1. Phep cong                                    |\n",
+	      "");
+      printf ("%-30s|2. Phep tru                                     |\n",
+	      "");
+      printf ("%-30s|________________________________________________|\n",
+	      "");
+      printf ("%-30sMoi ban chon chuc nang \n", "");
+      int chon;
+      scanf ("%d", &chon);
+      switch (chon)
+	{
+	case 1:
+	  while (1)
+	    {
+	      printf
+		("\n%-30s__________________________________________________\n",
+		 "");
+	      printf
+		("%-30s|_____________________MENU_______________________|\n",
+		 "");
+	      printf
+		("%-30s|1. Mot so chua duoc bieu dien dang mang         |\n",
+		 "");
+	      printf
+		("%-30s|2. Da duoc bieu dien                            |\n",
+		 "");
+		    printf
+		("%-30s|3. Exit                                         |\n",
+		 "");
+	      printf
+		("%-30s|________________________________________________|\n",
+		 "");
+	      printf ("%-30sMoi ban chon chuc nang \n", "");
+	      int chon;
+	      scanf ("%d", &chon);
+
+	      switch (chon)
+		{
+		case 1:
+
+		  printf ("Nhap so a :");
+		  scanf ("%d", &a);
+		  int *pA = PAr (a);
+		  int A[100];
+		  for (int i = 0; i < t; i++)
+		    {
+		      A[i] = pA[i];
+		    }
+
+		  printf ("Nhap so b :");
+		  scanf ("%d", &b);
+		  int *pB = PAr (b);
+		  int B[100];
+		  for (int i = 0; i < t; i++)
+		    {
+		      B[i] = pB[i];
+		    }
+
+		  tinh_tongtu_mang (A, B);
+
+		  break;
+		case 2:
+		  printf ("Nhap mang a\n");
+
+		  for (int i = t - 1; i >= 0; i--)
+		    {
+		      printf (" A[%d]= ", i);
+		      scanf ("%d", &A[i]);
+		    }
+		  printf ("Nhap mang b\n");
+
+		  for (int j = t - 1; j >= 0; j--)
+		    {
+		      printf (" B[%d]= ", j);
+		      scanf ("%d", &B[j]);
+		    }
+		  tinh_tongtu_mang (A, B);
+		  break;
+
+case 3: exit(0);
+		}
+	    }
+
+	  break;
+	  case 2:  while (1)
+    {
+      printf ("\n%-30s__________________________________________________\n",
+	      "");
+      printf ("%-30s|_____________________MENU_______________________|\n",
+	      "");
+      printf ("%-30s|1. Mot so chua duoc bieu dien dang mang         |\n",
+	      "");
+      printf ("%-30s|2. Da duoc bieu dien                            |\n",
+	      "");
+      printf ("%-30s|________________________________________________|\n",
+	      "");
+      printf ("%-30sMoi ban chon chuc nang \n", "");
+      int chon;
+      scanf ("%d", &chon);
+
+      switch (chon)
+	{
+	case 1:
+	  
+	  printf ("Nhap so a :");
+	  scanf ("%d", &a);
+	  int *pA = PAr (a);
+	  int A[100];
+	  for (int i = 0; i < t; i++)
+	    {
+	      A[i] = pA[i];
+	    }
+	 
+	  printf ("Nhap so b :");
+	  scanf ("%d", &b);
+	  int *pB = PAr (b);
+	  int B[100];
+	  for (int i = 0; i < t; i++)
+	    {
+	      B[i] = pB[i];
+	    }
+	    
+	 phep_tru(A,B);
+	     
+	  break;
+	case 2:
+	  printf ("Nhap mang a\n");
+	  
+	  for (int i = t-1; i >=0 ; i--)
+	    {
+	      printf (" A[%d]= ",i);
+	      scanf ("%d", &A[i]);
+	    }
+	  printf ("Nhap mang b\n");
+	  
+	  for (int j = t-1; j >= 0; j--)
+	    {
+	      printf (" B[%d]= ",j);
+	      scanf ("%d", &B[j]);
+	    }
+	  phep_tru (A,B);
+	break;
+
+	}
+    }
+	  break;
+	}
+
+
+    }
+}
